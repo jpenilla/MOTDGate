@@ -77,7 +77,6 @@ tasks {
   }
 
   shadowJar {
-    archiveFileName.set("${project.name}-${project.version}.jar")
     mergeServiceFiles()
     filesMatching("META-INF/services/**") {
       duplicatesStrategy = DuplicatesStrategy.INCLUDE
