@@ -1,3 +1,13 @@
-# MiniMessage shown to addresses which have not successfully joined this server.
-# This may contain a newline.
-unknown-motd: "A Minecraft Server"
+# All options apply only to addresses which have not successfully joined this server.
+
+# MiniMessage; may contain a newline.
+motd: "A Minecraft Server"
+
+# Use plugins/MOTDGate/icon.png; if missing, send no favicon.
+replace-icon: true
+
+# Hide the player-list hover sample and GameSpy full-query player list.
+hide-player-sample: true
+
+# Hide online/max player counts. Minecraft pings show ???; GameSpy queries report 0/0.
+hide-player-count: true
