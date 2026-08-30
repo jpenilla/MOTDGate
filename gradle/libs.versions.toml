@@ -8,6 +8,7 @@ immaculate = "0.2.5"
 paper = "1.21.11-R0.1-SNAPSHOT"
 minecraft = "26.2"
 paperTrail = "1.0.1"
+junit = "6.0.3"
 
 [plugins]
 indra = { id = "net.kyori.indra", version.ref = "indra" }
@@ -21,3 +22,5 @@ immaculate = { id = "dev.lukebemish.immaculate", version.ref = "immaculate" }
 [libraries]
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 paper-trail = { module = "io.papermc:paper-trail", version.ref = "paperTrail" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }

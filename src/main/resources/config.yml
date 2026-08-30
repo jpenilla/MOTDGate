@@ -1,0 +1,3 @@
+# MiniMessage shown to addresses which have not successfully joined this server.
+# This may contain a newline.
+unknown-motd: "A Minecraft Server"

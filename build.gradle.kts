@@ -27,6 +27,8 @@ repositories {
 dependencies {
   compileOnly(libs.paper.api)
   implementation(libs.paper.trail)
+  testImplementation(libs.junit.jupiter)
+  testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 indra {
@@ -70,6 +72,10 @@ bukkitPluginYaml {
 }
 
 tasks {
+  test {
+    useJUnitPlatform()
+  }
+
   shadowJar {
     archiveFileName.set("${project.name}-${project.version}.jar")
     mergeServiceFiles()
