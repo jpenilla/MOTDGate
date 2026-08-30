@@ -97,7 +97,7 @@ publishMods {
   modrinth {
     projectId = "c22V7fS9"
     file = tasks.shadowJar.flatMap { it.archiveFile }
-    type = STABLE
+    type = if (project.version.toString().contains("beta", ignoreCase = true)) BETA else STABLE
     minecraftVersions = listOf(
       "1.21.8",
       "1.21.9",
