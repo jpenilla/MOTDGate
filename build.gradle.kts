@@ -95,7 +95,7 @@ tasks {
 
 publishMods {
   modrinth {
-    projectId = "YOUR_MODRINTH_ID_HERE"
+    projectId = "c22V7fS9"
     file = tasks.shadowJar.flatMap { it.archiveFile }
     type = STABLE
     minecraftVersions = listOf(
