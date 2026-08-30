@@ -77,6 +77,7 @@ tasks {
   }
 
   shadowJar {
+    relocate("io.papermc.papertrail", "motdgate.io.papermc.papertrail")
     mergeServiceFiles()
     filesMatching("META-INF/services/**") {
       duplicatesStrategy = DuplicatesStrategy.INCLUDE
