@@ -1,3 +1,5 @@
+<img src="assets/logo.png" alt="MOTDGate logo" width="256">
+
 # MOTDGate
 
 MOTDGate is a small Paper plugin that hides a server's normal MOTD from addresses that have never
