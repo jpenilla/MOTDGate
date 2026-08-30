@@ -20,7 +20,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 final class KnownAddressStore implements AutoCloseable {
   static final String ADDRESSES_FILE_NAME = "known-addresses.txt";
   static final String SECRET_FILE_NAME = "secret.key";
@@ -29,19 +32,19 @@ final class KnownAddressStore implements AutoCloseable {
   private static final int ENCODED_HASH_LENGTH = 43;
   private static final Duration SHUTDOWN_TIMEOUT = Duration.ofSeconds(10);
 
-  private final Path addressesFile;
+  private final @Nullable Path addressesFile;
   private final AddressHasher hasher;
   private final Set<String> hashes;
-  private final ExecutorService writer;
+  private final @Nullable ExecutorService writer;
   private final Logger logger;
   private final AtomicBoolean persistenceErrorLogged = new AtomicBoolean();
   private final AtomicBoolean closed = new AtomicBoolean();
 
   private KnownAddressStore(
-      final Path addressesFile,
+      final @Nullable Path addressesFile,
       final byte[] key,
       final Set<String> hashes,
-      final ExecutorService writer,
+      final @Nullable ExecutorService writer,
       final Logger logger) {
     this.addressesFile = addressesFile;
     this.hasher = new AddressHasher(key);
@@ -71,12 +74,14 @@ final class KnownAddressStore implements AutoCloseable {
 
   void record(final InetAddress address) {
     final String hash = this.hasher.hash(address);
-    if (!this.hashes.add(hash) || this.writer == null || this.closed.get()) {
+    final Path addressesFile = this.addressesFile;
+    final ExecutorService writer = this.writer;
+    if (!this.hashes.add(hash) || addressesFile == null || writer == null || this.closed.get()) {
       return;
     }
 
     try {
-      this.writer.execute(() -> this.append(hash));
+      writer.execute(() -> this.append(addressesFile, hash));
     } catch (final RejectedExecutionException exception) {
       this.logPersistenceError(exception);
     }
@@ -88,27 +93,28 @@ final class KnownAddressStore implements AutoCloseable {
 
   @Override
   public void close() {
-    if (this.writer == null || !this.closed.compareAndSet(false, true)) {
+    final ExecutorService writer = this.writer;
+    if (writer == null || !this.closed.compareAndSet(false, true)) {
       return;
     }
 
-    this.writer.shutdown();
+    writer.shutdown();
     try {
-      if (!this.writer.awaitTermination(SHUTDOWN_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS)) {
+      if (!writer.awaitTermination(SHUTDOWN_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS)) {
         this.logger.warning("Timed out while saving known addresses");
-        this.writer.shutdownNow();
+        writer.shutdownNow();
       }
     } catch (final InterruptedException exception) {
       Thread.currentThread().interrupt();
-      this.writer.shutdownNow();
+      writer.shutdownNow();
       this.logger.warning("Interrupted while saving known addresses");
     }
   }
 
-  private void append(final String hash) {
+  private void append(final Path addressesFile, final String hash) {
     try {
       Files.writeString(
-          this.addressesFile,
+          addressesFile,
           hash + System.lineSeparator(),
           StandardCharsets.US_ASCII,
           StandardOpenOption.CREATE,

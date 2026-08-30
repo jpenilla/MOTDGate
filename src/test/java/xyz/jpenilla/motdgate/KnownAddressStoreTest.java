@@ -12,9 +12,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+@NullMarked
 class KnownAddressStoreTest {
   private static final Logger LOGGER = Logger.getLogger(KnownAddressStoreTest.class.getName());
 

@@ -26,6 +26,7 @@ repositories {
 }
 dependencies {
   compileOnly(libs.paper.api)
+  compileOnly(libs.jspecify)
   implementation(libs.paper.trail)
   testImplementation(libs.junit.jupiter)
   testRuntimeOnly(libs.junit.platform.launcher)

@@ -5,7 +5,9 @@ import java.security.GeneralSecurityException;
 import java.util.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 final class AddressHasher {
   private static final String ALGORITHM = "HmacSHA256";
 
